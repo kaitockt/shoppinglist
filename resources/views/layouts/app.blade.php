@@ -27,7 +27,7 @@
 <body class="bg-gray-100 h-screen antialiased leading-none font-sans">
     <div id="app">
         {{-- reference: https://www.themes.dev/blog/responsive-navigation-menu-tailwind-css/ --}}
-        <header x-data="{mobileMenuOpen: false}" class="flex flex-wrap flex-row justify-between bg-green-800 py-6 px-6 md:items-center md:space-x-4 relative">
+        <header x-data="{mobileMenuOpen: false, invitationMenuOpen: false}" class="flex flex-wrap flex-row justify-between bg-green-800 py-6 px-6 md:items-center md:space-x-4 relative">
             <a href="#" class="text-lg font-semibold block text-gray-100">
                 {{ config('app.name', 'Laravel') }}
             </a>
@@ -48,22 +48,19 @@
                     p-6 pt-0 md:p-0"
                 :class="{'flex':mobileMenuOpen, 'hidden':!mobileMenuOpen}" @click.away="mobileMenuOpen = false">
                 @guest
-                    <a href="{{ route('login') }}" class="text-gray-300 hover:text-white">
+                    <a href="{{ route('login') }}" class="text-gray-300 py-1 hover:text-white">
                         <i class="fas fa-sign-in-alt"></i>
                         {{ __('Login') }}
                     </a>
-                    <a href="{{ route('register') }}" class="text-gray-300 hover:text-white">{{ __('Register') }}</a>
+                    <a href="{{ route('register') }}" class="text-gray-300 py-1 hover:text-white">{{ __('Register') }}</a>
                 @else
-                    <a href="/" class="text-gray-300 hover:text-white">
+                    <a href="/" class="text-gray-300 py-1 hover:text-white">
                         <i class="far fa-list-alt"></i>
                         My Shopping Lists
                     </a>
-                    <a href="#" class="text-gray-300 hover:text-white">
-                        <i class="fas fa-envelope"></i>
-                        My Invitations
-                    </a>
+                    @include('invitations.dropdown')
                     <a href="{{ route('logout') }}"
-                        class="text-gray-300 hover:text-white"
+                        class="text-gray-300 py-1 hover:text-white"
                         onclick="event.preventDefault();
                             document.getElementById('logout-form').submit();">
                             <i class="fas fa-sign-out-alt"></i>

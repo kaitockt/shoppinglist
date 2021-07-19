@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ShoppingList;
 use App\Models\ShoppingListUser;
+use Illuminate\Support\Facades\Auth;
 
 class InvitationController extends Controller
 {
@@ -92,10 +93,23 @@ class InvitationController extends Controller
         //         ['status', '=', 0]
         //     ]);
         // })->get()->toJson();
-        return ShoppingListUser::with('user')
+        return ShoppingListUser::with('user:id,name', 'shoppinglist:id,name', 'inviter:id,name')
             ->where([
                 ['user_id', $uid],
                 ['status', 0]
-                ])->get()->toJson();
+                ])
+            ->get()
+            ->toJson();
+    }
+
+    public function dropdownList(){
+        // $uid = Auth::id();
+        // return ShoppingListUser::with('user:id,name', 'shoppinglist:id,name', 'inviter:id,name')
+        // ->where([
+        //     ['user_id', $uid],
+        //     ['status', 0]
+        //     ])
+        // ->get();
+        return [1,2,3];
     }
 }

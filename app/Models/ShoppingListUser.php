@@ -12,10 +12,14 @@ class ShoppingListUser extends Model
     protected $table ="shoppinglist_user";
 
     public function user(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function shoppingList(){
-        return $this->belongsTo(ShoppingList::class);
+        return $this->belongsTo(ShoppingList::class, 'shoppinglist_id');
+    }
+
+    public function inviter(){
+        return $this->belongsTo(User::class, 'inviter');
     }
 }
