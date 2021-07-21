@@ -42,6 +42,7 @@ class ViewServiceProvider extends ServiceProvider
                     ['user_id', $uid],
                     ['status', 0]
                     ])
+                ->take(10)  //limit by 10
                 ->get()
                 ->toArray()
             );

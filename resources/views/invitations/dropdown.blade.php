@@ -31,7 +31,7 @@
 @empty
     
 @endforelse
-    <div class="bg-white block text-center px-4 py-3 border-b hover:bg-gray-100">
+    <div class="bg-white block text-center px-4 py-3 border-b hover:bg-gray-100 capitalize">
         <a href="#">See all invitations</a>
     </div>
 </div>

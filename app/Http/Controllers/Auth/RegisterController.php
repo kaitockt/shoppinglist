@@ -9,6 +9,9 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
+use App\Models\ShoppingList;
+use Carbon\Carbon;
+
 class RegisterController extends Controller
 {
     /*
@@ -64,10 +67,36 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+
+        // return User::create([
+        //     'name' => $data['name'],
+        //     'email' => $data['email'],
+        //     'password' => Hash::make($data['password']),
+        // ])
+
+        if($user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-        ]);
+        ])){
+            $uid = $user->id;
+
+            $list = ShoppingList::create([
+                'name' => $data['name']."'s First Shopping List",
+                'created_by'=> $uid,
+                'last_opened' => Carbon::now()->toDateTimeString()
+            ]);
+
+            $list->user()->attach([
+                $uid => [
+                "status" => 1,
+                'inviter' => $uid
+                ]]);
+            return $user;
+        } else {
+            return false;
+        }
+
+
     }
 }
