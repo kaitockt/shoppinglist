@@ -27,8 +27,12 @@
     <div class="flex justify-between mt-10">
         <p>Creator: {{ $list->creator->name }}</p>
         <p>
-            @if(count($list->users->where(['status', 1])) > 1)
-            Shared by: {{ $list->users->where(['id', '<>', $list->creator->id])->implode('name', ', ')}}
+            @if($list->users()->wherePivot('status', 1)->count() > 1)
+            Shared by: {{ $list->users()
+                ->wherePivot('status', 1)
+                ->where('user_id', '<>', $list->creator->id)
+                ->get()
+                ->implode('name', ', ')}}
             @endif
         </p>
     </div>
