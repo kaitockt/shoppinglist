@@ -61,18 +61,32 @@
                 <!--TODO: Add referene to existing priorities-->
                 
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="buy-by">Buy By(Optional)</label>
-                <input type="date" name="buy-by" id="buy-by" class="block w-80 py-2 px-4 my-2">
+                <input type="date" name="buy-by" id="buy-by" class="block w-80 py-2 px-4 my-2"
+                    {{ isset($item->buy_by)? "value=$item->buy_by":"" }}>
                 
                 <div class="w-80 flex justify-between mt-5">
-                    <input type="checkbox" name="repeat" id="cb-repeat" class="form-checkbox my-2">
-                    <span class="py-2">Repeat Every</span>
+                    <input type="checkbox" name="repeat" id="cb-repeat" class="form-checkbox my-2"
+                        {{ isset($item) && $item->repeat != ""?"checked":""}}>
+                    <label for="cb-repeat" class="py-2">Repeat Every</label>
                     <div class="inline flex w-3/5">
                         <input type="number" name="repeat-number" id="repeat-number"
-                        class="py-2 px-4 ml-2 w-1/2 flex" value="1" disabled>
-                        <select name="repeat-unit" id="repeat-unit" class="py-2 px-2 flex" disabled>
-                            <option value="day">Day(s)</option>
-                            <option value="month">Month(s)</option>
-                            <option value="year">Year(s)</option>
+                        class="py-2 px-4 ml-2 w-1/2 flex"
+                        {{ !isset($item)?"value=\"1\" disabled":
+                            ($item->repeat?"value=".explode(" ", $item->repeat)[0]:"") }}
+                        >
+                        <select name="repeat-unit" id="repeat-unit" class="py-2 px-2 flex"
+                        @if(!isset($item)||!$item->repeat)
+                            disabled
+                        @endif
+                        >
+                            @foreach(["day", "week", "month", "year"] as $unit)
+                                <option value="{{ $unit }}"
+                                @if (isset($item) && explode(" ", $item->repeat)[1] == $unit)
+                                    selected
+                                @endif>
+                                    {{ ucfirst($unit) }}(s)
+                                </option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
