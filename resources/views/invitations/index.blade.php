@@ -51,7 +51,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="3">
+                <td colspan="3" class="px-6 py-4">
                     There is no invitations at the moment. 
                 </td>
             </tr>

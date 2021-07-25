@@ -117,7 +117,7 @@
             </tr>
             @empty
                 <tr>
-                    <td colspan="3">No items yet</td>
+                    <td class="px-6 py-4" colspan="4">No items yet</td>
                 </tr>
             @endforelse
             <form action="{{ route('list.quickAdd', ['list' => $list->id]) }}"
