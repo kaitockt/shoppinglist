@@ -55,7 +55,7 @@
                     @endif
                 </td>
                 <td class="px-6 py-4">
-                    {{ $item->buy_by }}
+                    {{ str_replace(" 00:00:00", "", $item->buy_by) }}
                     {{-- TODO: Show date only, hide time --}}
                 </td>
                 <td>

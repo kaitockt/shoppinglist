@@ -22,6 +22,6 @@ class ShoppingListUser extends Model
     }
 
     public function inviter(){
-        return $this->belongsTo(User::class, 'inviter');
+        return $this->belongsTo(User::class, 'inviter_id');
     }
 }
