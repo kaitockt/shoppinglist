@@ -42,10 +42,14 @@ class User extends Authenticatable
     ];
 
     public function shoppinglist(){
-        return $this->belongsToMany(Shoppinglist::class);
+        return $this->hasMany(Shoppinglist::class);
     }
 
     public function invitations(){
         return $this->hasMany(shoppinglistuser::class);
+    }
+
+    public function favourites(){
+        return $this->hasMany(Favourites::class, 'user_id');
     }
 }

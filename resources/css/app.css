@@ -3,3 +3,39 @@
 @import "tailwindcss/components";
 
 @import "tailwindcss/utilities";
+
+/* tooltip */
+
+.has-tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.has-tooltip .tooltip {
+    top: calc(100% + 6px);
+    left: 50%;
+    position: absolute;
+    opacity: 0;
+    transition: opacity 1s;
+    white-space: nowrap;
+}
+
+.tooltip-bottom {
+    transform: translateX(-50%);
+}
+
+.tooltip-bottom::after {
+    content: " ";
+    position: absolute;
+    bottom: 100%;  /* At the top of the tooltip */
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent black transparent;
+}
+
+.has-tooltip:hover .tooltip {
+    z-index: 100;
+    opacity: 1;
+}

@@ -27,8 +27,8 @@
 <body class="bg-gray-100 h-screen antialiased leading-none font-sans">
     <div id="app">
         {{-- reference: https://www.themes.dev/blog/responsive-navigation-menu-tailwind-css/ --}}
-        <header x-data="{mobileMenuOpen: false, invitationMenuOpen: false}" class="flex flex-wrap flex-row justify-between bg-green-800 py-6 px-6 md:items-center md:space-x-4 relative">
-            <a href="#" class="text-lg font-semibold block text-gray-100">
+        <header x-data="{mobileMenuOpen: false, invitationMenuOpen: false, listsDropdownOpen: false}" class="flex flex-wrap flex-row justify-between bg-green-800 py-6 px-6 md:items-center md:space-x-4 relative">
+            <a href="/" class="text-lg font-semibold block text-gray-100">
                 {{ config('app.name', 'Laravel') }}
             </a>
             <button
@@ -54,10 +54,7 @@
                     </a>
                     <a href="{{ route('register') }}" class="text-gray-300 py-1 hover:text-white">{{ __('Register') }}</a>
                 @else
-                    <a href="/" class="text-gray-300 py-1 hover:text-white">
-                        <i class="far fa-list-alt"></i>
-                        My Shopping Lists
-                    </a>
+                    @include('shoppinglist.dropdown')
                     @include('invitations.dropdown')
                     <a href="{{ route('logout') }}"
                         class="text-gray-300 py-1 hover:text-white"
@@ -72,8 +69,9 @@
                 @endguest
             </nav>
         </header>
-
-        @yield('content')
+        <div class="container mx-auto">
+            @yield('content')
+        </div>
     </div>
 </body>
 </html>

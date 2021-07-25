@@ -1,5 +1,7 @@
 {
     "/js/app.js": "/js/app.js",
-    "/js/createList.js": "/js/createList.js",
-    "/css/app.css": "/css/app.css"
+    "/js/listForm.js": "/js/listForm.js",
+    "/js/autocomplete.js": "/js/autocomplete.js",
+    "/css/app.css": "/css/app.css",
+    "/css/autocomplete.css": "/css/autocomplete.css"
 }

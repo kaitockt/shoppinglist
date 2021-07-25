@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\ShoppingList;
 use App\Models\ShoppingListUser;
 use App\Models\User;
+use App\Models\ListItems;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
@@ -30,28 +31,32 @@ class ShoppingListController extends Controller
 
         $uid = Auth::id();
 
-        //TODO: Can we combine the two query?
-        $shoppingList = ShoppingList::whereHas('user', function($q) use ($uid) {
+        // $shoppingLists = ShoppingList::whereHas('user', function($q) use ($uid) {
+        //     $q->where([
+        //         ['id', '=', $uid],
+        //         ['status', 1]   //invitation status
+        //     ]);
+        // })
+        // ->get();
+
+        $shoppingLists = ShoppingList::whereHas('users', function($q) use($uid){
             $q->where([
-                ['id', '=', $uid],
-                ['status', 1]   //invitation status
-            ]);
-        })
-        ->get();
+                ['id', $uid],
+                ['status', 1]
+                ]);
+            })->withCount('items')
+            ->get();
 
-        $invitations = ShoppingList::whereHas('user', function($q) use ($uid) {
-            $q->where([
-                ['id', '=', $uid],
-                ['status', '<>', 1]   //invitation status
-            ]);
-        })
-        ->get();
+        // $invitations = ShoppingList::whereHas('user', function($q) use ($uid) {
+        //     $q->where([
+        //         ['id', '=', $uid],
+        //         ['status', '<>', 1]   //invitation status
+        //     ]);
+        // })
+        // ->get();
 
-        
-
-        return view('index', [
-            'shoppingLists' => $shoppingList,
-            'invitations' => $invitations
+        return view('shoppinglist.index', [
+            'shoppingLists' => $shoppingLists,
         ]);
     }
 
@@ -85,6 +90,7 @@ class ShoppingListController extends Controller
             "status" => 1,
             'inviter' => $uid
             ]];
+    
         $invites = json_decode($request->input('invite'), true);
         //Can't understand why array_walk did not work here, should investigate later:
         //array_walk($invites, function($user) use ($users){
@@ -96,12 +102,15 @@ class ShoppingListController extends Controller
         //     $users[$user['id']] = ['status' => 0];
         // });
 
-        foreach($invites as $user){
-            $users[$user['id']] = [
-                'status' => 0,
-                'inviter' => $uid
-        ];
+        if($invites){
+            foreach($invites as $user){
+                $users[$user['id']] = [
+                    'status' => 0,
+                    'inviter' => $uid
+                ];
+            }
         }
+        
 
         $request->validate([
             'name' => 'required'
@@ -114,9 +123,9 @@ class ShoppingListController extends Controller
         ]);
 
 
-        $list->user()->attach($users);
+        $list->users()->attach($users);
 
-        return redirect('/list');
+        return redirect('/list/'.$list->id);
     }
 
     /**
@@ -128,6 +137,22 @@ class ShoppingListController extends Controller
     public function show($id)
     {
         //
+        $uid = Auth::id();
+        $list = ShoppingList::where('id', $id)
+            ->whereHas('users', function($q) use ($uid) {
+                $q->where([
+                    ['id', '=', $uid],
+                    ['status', 1]   //invitation status
+                ]);
+            })
+            ->firstOrFail();    //show error message?
+
+            //update the last opened time
+            $list->users()->updateExistingPivot($uid, [
+                'last_opened' => Carbon::now()
+            ]);
+        
+        return view('shoppinglist.show', ['list' => $list]);
     }
 
     /**
@@ -139,6 +164,8 @@ class ShoppingListController extends Controller
     public function edit($id)
     {
         //
+        $list = ShoppingList::findOrFail($id);
+        return view('shoppinglist.edit', ['list' => $list]);
     }
 
     /**
@@ -151,6 +178,7 @@ class ShoppingListController extends Controller
     public function update(Request $request, $id)
     {
         //
+        dd($request);
     }
 
     /**
@@ -162,5 +190,46 @@ class ShoppingListController extends Controller
     public function destroy($id)
     {
         //
+        dd($id);
+    }
+
+    public function home() {
+        $uid = Auth::id();
+        $latestList = ShoppingList::with(['users' => function($q) use ($uid){
+            $q->where([
+                ['id', $uid],
+                ['status', '<>', 1]
+            ])
+            ->orderBy('last_opened', 'DESC');
+        }])
+        ->firstOrFail();
+        return redirect('/list/'.$latestList->id);
+    }
+
+    public function detailedAdd($id){
+        $list = ShoppingList::where('id', $id)
+            ->whereHas('users', function($q){
+                $q->where([
+                    ['id', '=', Auth::id()],
+                    ['status', 1]   //invitation status
+                ]);
+            })
+            ->firstOrFail();    //show error message?
+        return view('shoppinglist.additem', ['list' => $list]);
+    }
+
+    public function add(Request $request, $id){
+
+    }
+
+    public function quickAdd(Request $request, $id){
+        $request->validate(['name' => 'required']);
+        return ListItems::create([
+            'list_id' => $id,
+            'name' => $request->input('name'),
+            'priority' => ShoppingList::findOrFail($id)->items()->max('priority') + 1
+        ])?
+        redirect("/list/$id"):
+        redirect("/list/$id");  //TODO: Error handling?
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\ShoppingListUser;
+use App\Models\ShoppingList;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -46,6 +47,21 @@ class ViewServiceProvider extends ServiceProvider
                 ->get()
                 ->toArray()
             );
+        });
+
+        view()->composer('shoppinglist.dropdown', function($view){
+            $uid = Auth::id();
+            $view->with(
+                'lists', ShoppingList::whereHas('users', function($q) use ($uid){
+                    $q->where([
+                        ['id', $uid],
+                        ['status', 1]
+                    ]);
+                })
+                ->take(10)
+                ->withCount('items')
+                ->get()
+            ); 
         });
     }
 }

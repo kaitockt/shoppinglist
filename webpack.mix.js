@@ -13,7 +13,10 @@ const mix = require('laravel-mix');
 
 mix
   .js('resources/js/app.js', 'public/js')
-  .js('resources/js/createList.js', 'public/js')
+  .js('resources/js/listForm.js', 'public/js')
+  .js('resources/js/autocomplete.js', 'public/js')
+  .js('resources/js/additem.js', 'public/js')
+  .postCss('resources/css/autocomplete.css', 'public/css')
   .postCss('resources/css/app.css', 'public/css', [
     require('postcss-import'),
     require('tailwindcss'),
