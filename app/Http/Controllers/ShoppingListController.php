@@ -141,7 +141,7 @@ class ShoppingListController extends Controller
         $list = ShoppingList::where('id', $id)
             ->whereHas('users', function($q) use ($uid) {
                 $q->where([
-                    ['id', '=', $uid],
+                    ['user_id', '=', $uid],
                     ['status', 1]   //invitation status
                 ]);
             })

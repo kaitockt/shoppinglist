@@ -17,7 +17,13 @@ class InvitationController extends Controller
     public function index()
     {
         //
-        return view('index');
+        $invitations = ShoppingListUser::whereHas("user", function($q){
+            $q->where([
+                ['id', '=', Auth::id()],
+                ['status', 0]   //invitation status
+            ]);
+        })->get();
+        return view('invitations.index', ['invitations' => $invitations]);
     }
 
     /**
@@ -102,14 +108,29 @@ class InvitationController extends Controller
             ->toJson();
     }
 
-    public function dropdownList(){
-        // $uid = Auth::id();
-        // return ShoppingListUser::with('user:id,name', 'shoppinglist:id,name', 'inviter:id,name')
-        // ->where([
-        //     ['user_id', $uid],
-        //     ['status', 0]
-        //     ])
-        // ->get();
-        return [1,2,3];
+    public function accept(int $list, int $uid){
+        $inv = ShoppingListUser::where([
+            ['shoppinglist_id', $list],
+            ['user_id', $uid],
+            ['status', 0]
+        ])->firstOrFail();
+
+        $inv->status = 1;
+
+        $inv->save();
+
+        return redirect('/list/'.$list);
+    }
+
+    public function decline(int $list, int $uid){
+        $inv = ShoppingListUser::where([
+            ['shoppinglist_id', $list],
+            ['user_id', $uid],
+            ['status', 0]
+        ])->firstOrFail();
+
+        $inv->delete();
+
+        return redirect('/invitations');
     }
 }

@@ -11,6 +11,8 @@ class ShoppingListUser extends Model
 
     protected $table ="shoppinglist_user";
 
+    public $timestamps = false;
+
     public function user(){
         return $this->belongsTo(User::class, 'user_id');
     }

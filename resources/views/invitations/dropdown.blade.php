@@ -20,18 +20,37 @@
             {{ $invitation['inviter']['name'] }} would like to share this shopping list with you:<br>
             {{ $invitation['shoppinglist']['name'] }}
         </span>
-        
-        <button class="text-white bg-green-500 p-2 w-30 uppercase mx-1 text-xs">
-            Accept
-        </button>
-        <button class="text-white bg-red-500 p-2 w-30 uppercase mx-1 text-xs">
-            Decline
-        </button>
+        {{-- Accept --}}
+        <form action="{{
+            route('invitations.accept', [
+                'list' => $invitation['shoppinglist']['id'],
+                'uid' => Auth::id(),
+                ]) }}" method="post">
+            @csrf
+            {{ method_field('PUT') }}
+            <button class="text-white bg-green-500 hover:bg-green-600 p-2 w-30 uppercase mx-1 text-xs">
+                Accept
+            </button>
+        </form>
+        {{-- decline --}}
+        <form action="{{
+            route('invitations.decline', [
+                'list' => $invitation['shoppinglist']['id'],
+                'uid' => Auth::id(),
+                ]) }}" method="post">
+            @csrf
+            {{ method_field('DELETE') }}
+            <button class="text-white bg-red-500 hover:bg-red-600 p-2 w-30 uppercase mx-1 text-xs">
+                Decline
+            </button>
+        </form>
     </div>
 @empty
     
 @endforelse
-    <div class="bg-white block text-center px-4 py-3 border-b hover:bg-gray-100 capitalize">
-        <a href="#">See all invitations</a>
-    </div>
+    <a href="{{ route('invitations.index') }}">
+        <div class="bg-white block text-center px-4 py-3 border-b hover:bg-gray-100 capitalize">
+            See all invitations
+        </div>
+    </a>
 </div>

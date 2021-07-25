@@ -54,7 +54,7 @@ class ViewServiceProvider extends ServiceProvider
             $view->with(
                 'lists', ShoppingList::whereHas('users', function($q) use ($uid){
                     $q->where([
-                        ['id', $uid],
+                        ['users.id', $uid],
                         ['status', 1]
                     ]);
                 })

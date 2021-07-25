@@ -34,7 +34,7 @@ Route::resource('/list', ShoppingListController::class);
 Route::get('list/{list}/detailedAdd', [ShoppingListController::class, 'detailedAdd'])->name('list.detailedAdd');
 Route::post('list/{list}/add', [ShoppingListController::class, 'add'])->name('list.add');
 Route::post('list/{list}/quickAdd', [ShoppingListController::class, 'quickAdd'])->name('list.quickAdd');
-Route::resource('/invitations', InvitationController::class);
+
 
 Route::resource('/listitems', ListItemsController::class);
 Route::post('/listitems/{listitem}/done', [ListItemsController::class, 'done'])->name('listitems.done');
@@ -42,3 +42,8 @@ Route::post('/listitems/{listitem}/done', [ListItemsController::class, 'done'])-
 //favourite
 Route::get('favourites/add/{name}', [FavouritesController::class, 'add'])->name('favourite.add');
 Route::get('favourites/remove/{name}', [FavouritesController::class, 'remove'])->name('favourite.remove');
+
+//invitations
+Route::resource('/invitations', InvitationController::class);
+Route::put('list/{list}/invitations/{uid}', [InvitationController::class, 'accept'])->name('invitations.accept');
+Route::delete('list/{list}/invitations/{uid}', [InvitationController::class, 'decline'])->name('invitations.decline');
