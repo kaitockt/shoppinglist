@@ -33,14 +33,8 @@
             </ul>
         </div>
     @endif
-    @if(isset($list))
-    {{-- Add Form --}}
-    <form action="{{ route('list.add', ['list' => $list->id]) }}" method="post" autocomplete="off">
-    @elseif (isset($item))
-    {{-- Edit Item --}}
-    <form action="{{ route('listitems.update', ['listitem' => $item->id]) }}" method="post" autocomplete="off">
-    @endif
-    
+
+    @yield('formTag')
         @csrf
         <div class="flex justify-center pt-20">
             <div class="block">
@@ -55,9 +49,8 @@
                 
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="priority">Priority</label>
                 <input type="number" id="priority" name="priority" step="1"
-                    class="block w-80 py-2 px-4 my-2" value=
-                    "{{ isset($list)?$list->items()->max('priority') + 1:(isset($item)?$item->priority:"") }}"
-                    >    <!--Add Item: Default Value is set to last of the list-->
+                    class="block w-80 py-2 px-4 my-2" value="@yield('priorityVal')"
+                    >    
                 <!--TODO: Add referene to existing priorities-->
                 
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="buy-by">Buy By(Optional)</label>
@@ -70,10 +63,7 @@
                     <label for="cb-repeat" class="py-2">Repeat Every</label>
                     <div class="inline flex w-3/5">
                         <input type="number" name="repeat-number" id="repeat-number"
-                        class="py-2 px-4 ml-2 w-1/2 flex"
-                        {{ !isset($item)?"value=\"1\" disabled":
-                            ($item->repeat?"value=".explode(" ", $item->repeat)[0]:"") }}
-                        >
+                        class="py-2 px-4 ml-2 w-1/2 flex" @yield("repeatNumber")>
                         <select name="repeat-unit" id="repeat-unit" class="py-2 px-2 flex"
                         @if(!isset($item)||!$item->repeat)
                             disabled
