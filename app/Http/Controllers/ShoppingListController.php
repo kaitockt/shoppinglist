@@ -41,7 +41,7 @@ class ShoppingListController extends Controller
 
         $shoppingLists = ShoppingList::whereHas('users', function($q) use($uid){
             $q->where([
-                ['id', $uid],
+                ['user_id', $uid],
                 ['status', 1]
                 ]);
             })->withCount('items')
