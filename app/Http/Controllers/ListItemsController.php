@@ -72,7 +72,18 @@ class ListItemsController extends Controller
     public function update(Request $request, $id)
     {
         //
-        dd($request);
+        $item = ListItems::findOrFail($id);
+
+        $item->name = $request->input('name');
+        $item->priority = $request->input('priority');
+        $item->buy_by = $request->input('buy-by');
+        $item->repeat = $request->input('repeat') == 'on'?
+        $request->input('repeat-number')." ".$request->input('repeat-unit'):
+        null;
+
+        $item->save();
+
+        return redirect('/list/'.$item->list_id);
     }
 
     /**

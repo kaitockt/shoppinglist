@@ -1,5 +1,7 @@
 @extends('listitems\itemform')
 
+@section('list_id'){{ $list->id }}@endsection
+
 @section('title')
 Add Item to {{ $list->name }}
 @endsection

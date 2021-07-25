@@ -49,7 +49,8 @@
     <div class="flex justify-center pt-20">
         <div class="block">
             @if (isset($list))   {{-- Edit list --}}
-                <form action="/list/{{ $list->id }}" method="PUT">
+                <form action="/list/{{ $list->id }}" method="POST">
+                    {{ method_field('PUT') }}
             @else               {{-- Create list --}}
                 <form action="/list" method="POST">
             @endif

@@ -20,7 +20,8 @@
 @endsection
 
 @section('content')
-<div class="m-auto py-24">
+<a href="/list/@yield("list_id")" class="flex pt-5 text-gray-400 hover:text-black">&larr; Back to Shopping List</a>
+<div class="m-auto py-19">
     <h1 class="text-5xl bold text-center py-5">
         @yield('title')
     </h1>
@@ -71,7 +72,7 @@
                         >
                             @foreach(["day", "week", "month", "year"] as $unit)
                                 <option value="{{ $unit }}"
-                                @if (isset($item) && explode(" ", $item->repeat)[1] == $unit)
+                                @if (isset($item) && str_contains($item->repeat, " ") && explode(" ", $item->repeat)[1] == $unit)
                                     selected
                                 @endif>
                                     {{ ucfirst($unit) }}(s)
