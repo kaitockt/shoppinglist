@@ -24,7 +24,16 @@
             {{ $list->name }}
         </h1>
     </div>
-    <table class="min-w-full my-10 table-fixed">
+    <div class="flex justify-between mt-10">
+        <p>Creator: {{ $list->creator->name }}</p>
+        <p>
+            @if(count($list->users->where(['status', 1])) > 1)
+            Shared by: {{ $list->users->where(['id', '<>', $list->creator->id])->implode('name', ', ')}}
+            @endif
+        </p>
+    </div>
+
+    <table class="min-w-full table-fixed my-5">
         <thead class="bg-gray-50">
             <tr>
                 <th scope="col" class="w-1/6 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -42,10 +51,12 @@
                     {{ $item->name }}
                     @if ($item->repeat)
                         <i class="fas fa-retweet text-gray-600"></i>
+                        {{-- TODO: Tooltip to show frequency of repeating --}}
                     @endif
                 </td>
                 <td class="px-6 py-4">
                     {{ $item->buy_by }}
+                    {{-- TODO: Show date only, hide time --}}
                 </td>
                 <td>
                     <div>
@@ -88,6 +99,7 @@
                             </span>
                         </a>
                         {{-- remove --}}
+                        {{-- TODO: Add Confirmation Alert --}}
                         <a href="{{ route('listitems.destroy', ['listitem' => $item->id]) }}" class="has-tooltip"
                             onclick="event.preventDefault();
                                 document.getElementById('remove-item-form-{{ $item->id }}').submit();">
@@ -113,7 +125,7 @@
                 @csrf
                 <tr class="bg-teal-100">
                     <td class="px-6 py-4">Quick Add</td>
-                    <td class="px-6 py-2">
+                    <td class="px-6 py-2" colspan="2">
                         <div class="autocomplete w-full">
                             <input id="quickAddName" type="text" name="name" class="w-full py-2 px-4">
                         </div>
@@ -125,7 +137,7 @@
                                 @endforeach
                         @endif
                     </td>
-                    <td></td><!--Buy by function not applicable for quick add-->
+                    <!--Buy by function not applicable for quick add-->
                     <td>
                         <button
                             class="text-white bg-green-500 p-2 w-30 uppercase mx-1 text-sm whitespace-nowrap">

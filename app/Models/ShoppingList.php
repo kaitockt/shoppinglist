@@ -22,4 +22,8 @@ class Shoppinglist extends Model
     public function items(){
         return $this->hasMany(ListItems::class, 'list_id');
     }
+
+    public function creator(){
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

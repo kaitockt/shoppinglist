@@ -2,6 +2,7 @@
     "/js/app.js": "/js/app.js",
     "/js/listForm.js": "/js/listForm.js",
     "/js/autocomplete.js": "/js/autocomplete.js",
+    "/js/additem.js": "/js/additem.js",
     "/css/app.css": "/css/app.css",
     "/css/autocomplete.css": "/css/autocomplete.css"
 }
