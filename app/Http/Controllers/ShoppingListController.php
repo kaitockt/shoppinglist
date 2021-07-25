@@ -219,7 +219,22 @@ class ShoppingListController extends Controller
     }
 
     public function add(Request $request, $id){
+        $request->validate([
+            'name' => 'required',
+            'priority' => 'required|numeric'
+        ]);
 
+        return ListItems::create([
+            'list_id' => $id,
+            'name' => $request->input('name'),
+            'priority' => $request->input('priority'),
+            'buy_by' => $request->input('buy-by'),
+            'repeat' => $request->input('repeat') == 'on'?
+                $request->input('repeat-number')." ".$request->input('repeat-unit'):
+                null,
+        ])?
+        redirect("/list/$id"):
+        redirect("/list/$id");  //TODO: Error handling?
     }
 
     public function quickAdd(Request $request, $id){

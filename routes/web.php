@@ -31,8 +31,8 @@ Route::get('/home', [\App\Http\Controllers\ShoppingListController::class, 'home'
 // Route::get('/', [ShoppingListController::class, 'index']);
 
 Route::resource('/list', ShoppingListController::class);
-Route::get('list/{list}/add', [ShoppingListController::class, 'add'])->name('list.add');
 Route::get('list/{list}/detailedAdd', [ShoppingListController::class, 'detailedAdd'])->name('list.detailedAdd');
+Route::post('list/{list}/add', [ShoppingListController::class, 'add'])->name('list.add');
 Route::post('list/{list}/quickAdd', [ShoppingListController::class, 'quickAdd'])->name('list.quickAdd');
 Route::resource('/invitations', InvitationController::class);
 

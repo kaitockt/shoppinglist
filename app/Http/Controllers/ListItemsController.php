@@ -58,6 +58,8 @@ class ListItemsController extends Controller
     public function edit($id)
     {
         //
+        $item = ListItems::findOrFail($id);
+        return view('listitems.edit', ['item' => $item]);
     }
 
     /**
