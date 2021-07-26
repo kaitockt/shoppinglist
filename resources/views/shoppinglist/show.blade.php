@@ -49,8 +49,11 @@
         </thead>
         <tbody class="bg-white">
         @forelse ($list->items->where('done', 0)->sortBy('priority') as $item)
-            <tr x-data="{otherOpen_{{ $item->id }}: false}">
-                <td class="px-6 py-4">{{ floatval($item->priority) /* remove .00*/}}</td>
+            <tr x-data="{otherOpen_{{ $item->id }}: false}" class="{{ $item->priority <= 0?"bg-red-200":"" }}">
+                {{-- Priority --}}
+                <td class="px-6 py-4">
+                    {{ floatval($item->priority) /* remove .00*/}}
+                </td>
                 <td class="px-6 py-4">
                     {{ $item->name }}
                     @if ($item->repeat)

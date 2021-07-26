@@ -4,10 +4,13 @@ namespace App\Providers;
 
 use App\Models\ShoppingListUser;
 use App\Models\ShoppingList;
+use App\Models\ListItems;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 use Illuminate\Support\Facades\Auth;
+
+use Carbon\Carbon;
 
 class ViewServiceProvider extends ServiceProvider
 {
@@ -62,6 +65,19 @@ class ViewServiceProvider extends ServiceProvider
                 ->withCount('items')
                 ->get()
             ); 
+        });
+
+        view()->composer('layouts.app', function() {
+            // Basically do this on every refresh?
+            if(Auth::check()){
+                $items = ListItems::where('buy_by', '<=', Carbon::now()->format('Y-m-d'))
+                    ->whereHas('list', function($q) {
+                    $q->whereHas('users', function($q){
+                        $uid = Auth::id();
+                        $q->where('user_id', $uid);
+                    });
+                })->update(['priority' => 0]);
+            }
         });
     }
 }

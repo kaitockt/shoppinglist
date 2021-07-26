@@ -16,7 +16,11 @@ class Shoppinglist extends Model
     protected $fillable = ['name', 'created_by'];
 
     public function users(){
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(
+            User::class,
+            'shoppinglist_user',
+            'shoppinglist_id',
+            'user_id');
     }
 
     public function items(){
