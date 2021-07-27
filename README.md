@@ -7,4 +7,4 @@ A Laravel Web App to help maintaining shopping lists across users
 * Invite other users to use the same shopping lists
 * Set deadlines for buying items
 * Automatically repeat the same item after a predestinated period of time
-* Add items to favourite to add it again anytime
+* Add items to favourite to add it again easily
