@@ -12,11 +12,11 @@
 
 @forelse ($lists as $list)
     {{-- <div class="flex items-center px-4 py-3 border-b hover:bg-gray-100 -mx-2"> --}}
-    <a href="/list/{{ $list['id'] }}">
+    <a href="/list/{{ $list->id }}">
         <div class="bg-white flex items-center px-4 py-3 border-b hover:bg-gray-100">
             {{ $list->name }}
             <span class="text-sm text-gray-500 italic pl-2">
-                ({{ $list->items_count }} items)
+                ({{ $list->validItemsCount }} items)
             </span>
         </div>
     </a>

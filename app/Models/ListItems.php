@@ -14,7 +14,7 @@ class ListItems extends Model
 
     protected $table = "listitems";
 
-    protected $fillable = ["list_id", "name", "priority", "done", "buy_by", "repeat"];
+    protected $fillable = ["list_id", "name", "priority", "done", "buy_by", "repeat", "valid_from"];
 
     public function list(){
         return $this->belongsTo(ShoppingList::class, 'list_id');

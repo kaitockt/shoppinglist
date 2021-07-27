@@ -8,7 +8,7 @@
             <li
             class="rounded px-4 py-4 border-2 my-2 text-lg hover:bg-gray-200 flex justify-between">
                 <a href="\list\{{ $list->id }}">{{ $list->name }}
-                    <span class="italic text-sm text-gray-500">({{ $list->items_count }} items)</span>
+                    <span class="italic text-sm text-gray-500">({{ $list->validItemsCount }} items)</span>
                 </a>
                 <div>
                     <!--Buttons-->

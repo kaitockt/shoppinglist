@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\ListItems;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use DB;
 
 
 class ShoppingListController extends Controller
@@ -31,29 +32,20 @@ class ShoppingListController extends Controller
 
         $uid = Auth::id();
 
-        // $shoppingLists = ShoppingList::whereHas('user', function($q) use ($uid) {
-        //     $q->where([
-        //         ['id', '=', $uid],
-        //         ['status', 1]   //invitation status
-        //     ]);
-        // })
-        // ->get();
-
-        $shoppingLists = ShoppingList::whereHas('users', function($q) use($uid){
-            $q->where([
-                ['user_id', $uid],
+        $shoppingLists = ShoppingList::whereHas('users', function($q) {
+            $q -> where([
+                ['user_id', Auth::id()],
                 ['status', 1]
-                ]);
-            })->withCount('items')
-            ->get();
+            ]);
+        })
+        ->get();
 
-        // $invitations = ShoppingList::whereHas('user', function($q) use ($uid) {
-        //     $q->where([
-        //         ['id', '=', $uid],
-        //         ['status', '<>', 1]   //invitation status
-        //     ]);
-        // })
-        // ->get();
+        $shoppingLists = DB::select(
+            'SELECT l.*, sum(if(i.valid_from <= NOW(), 1, 0)) AS validItemsCount
+            FROM shoppinglist AS l INNER JOIN shoppinglist_user AS su ON l.id = su.shoppinglist_id
+            LEFT JOIN listitems AS i ON l.id = i.list_id
+            WHERE su.user_id = 1 AND su.status = 1
+            GROUP BY su.id ORDER BY su.last_opened DESC;');
 
         return view('shoppinglist.index', [
             'shoppingLists' => $shoppingLists,
@@ -141,7 +133,7 @@ class ShoppingListController extends Controller
         $list = ShoppingList::where('id', $id)
             ->whereHas('users', function($q) use ($uid) {
                 $q->where([
-                    ['user_id', '=', $uid],
+                    ['user_id', $uid],
                     ['status', 1]   //invitation status
                 ]);
             })
@@ -197,7 +189,7 @@ class ShoppingListController extends Controller
         $uid = Auth::id();
         $latestList = ShoppingList::with(['users' => function($q) use ($uid){
             $q->where([
-                ['id', $uid],
+                ['user_id', $uid],
                 ['status', '<>', 1]
             ])
             ->orderBy('last_opened', 'DESC');

@@ -48,7 +48,7 @@
             </tr>
         </thead>
         <tbody class="bg-white">
-        @forelse ($list->items->where('done', 0)->sortBy('priority') as $item)
+        @forelse ($list->items->where('done', 0)->where('valid_from', '<=', now())->sortBy('priority') as $item)
             <tr x-data="{otherOpen_{{ $item->id }}: false}" class="{{ $item->priority <= 0?"bg-red-200":"" }}">
                 {{-- Priority --}}
                 <td class="px-6 py-4">
