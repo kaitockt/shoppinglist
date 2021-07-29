@@ -75,7 +75,7 @@
                     placeholder="Input the names of your friends"
                     class="block shadow-5xl mb-10 p-2 w-80 italic placeholder-gray-400">
                 <button
-                    class="bg-green-600 block shadow-5xl mb-10 p-2 w-80 uppercase font-semibold text-white"
+                    class="bg-green-500 hover:bg-green-600 block shadow-5xl mb-10 p-2 w-80 uppercase font-semibold text-white"
                     type="submit">
                     SUBMIT
                 </button>

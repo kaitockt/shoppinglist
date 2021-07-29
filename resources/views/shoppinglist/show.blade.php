@@ -22,6 +22,12 @@
     <div class="text-center">
         <h1 class="text-5xl uppercase bold">
             {{ $list->name }}
+            <a href="{{ route('list.edit', ['list' => $list->id]) }}" class="has-tooltip">
+                <i class="fas fa-edit text-gray-500 px-1 hover:text-gray-900 text-lg"></i>
+                <span class="tooltip tooltip-bottom p-2 rounded bg-gray-800 text-white text-sm">
+                    Edit
+                </span>
+            </a>
         </h1>
     </div>
     <div class="flex justify-between mt-10">
@@ -34,6 +40,12 @@
                 ->get()
                 ->implode('name', ', ')}}
             @endif
+            <a href="{{ route('list.edit', ['list' => $list->id]) }}" class="has-tooltip">
+                <i class="fas fa-share-alt text-gray-500 hover:text-gray-900"></i>
+                <span class="tooltip tooltip-bottom p-2 rounded bg-gray-800 text-white">
+                    Share with other users
+                </span>
+            </a>
         </p>
     </div>
 
@@ -69,13 +81,13 @@
                     <div>
                         <form action="/listitems/{{ $item->id }}/done" method="post" class="inline">
                         @csrf
-                        <button class="text-white bg-green-500 p-2 w-30 uppercase mx-1 text-xs">
+                        <button class="text-white bg-green-500 hover:bg-green-600 p-2 w-30 uppercase mx-1 text-xs">
                             <i class="fas fa-check text-white px-1"></i>
                             <span class="font-semibold">Done</span>
                         </button>
                         </form>
                         <a href="#" @click="otherOpen_{{ $item->id }} = !otherOpen_{{ $item->id }}">
-                            <i class="fas fa-ellipsis-h text-gray-500 px-1"></i>
+                            <i class="fas fa-ellipsis-h text-gray-500 px-1 hover:text-gray-900"></i>
                         </a>
                     </div>
                     <div class="py-3"
@@ -83,16 +95,16 @@
                         @click.away="otherOpen_{{ $item->id }} = false">
                         @if($item->fav())
                             {{-- favourite --}}
-                            <a href="/favourites/remove/{{ $item->name }}" class="has-tooltip">
-                                <i class="fas fa-heart text-red-500 px-1"></i>
+                            <a href="{{ route('favourite.remove', ['name' => $item->name]) }}" class="has-tooltip">
+                                <i class="fas fa-heart text-red-500 hover:text-red-600 px-1"></i>
                                 <span class="tooltip tooltip-bottom p-2 rounded bg-gray-800 text-white">
                                     Remove From Favourite
                                 </span>
                             </a>
                         @else
                             {{-- not favourite --}}
-                            <a href="/favourites/add/{{ $item->name }}" class="has-tooltip">
-                                <i class="far fa-heart text-gray-500 px-1"></i>
+                            <a href="{{ route('favourite.add', ['name' => $item->name]) }}" class="has-tooltip">
+                                <i class="far fa-heart text-gray-500 hover:text-gray-900 px-1"></i>
                                 <span class="tooltip tooltip-bottom p-2 rounded bg-gray-800 text-white">
                                     Add To Favourite
                                 </span>
@@ -147,7 +159,7 @@
                     <!--Buy by function not applicable for quick add-->
                     <td>
                         <button
-                            class="text-white bg-green-500 p-2 w-30 uppercase mx-1 text-sm whitespace-nowrap">
+                            class="text-white bg-green-500 hover:bg-green-600 p-2 w-30 uppercase mx-1 text-sm whitespace-nowrap">
                             <i class="fas fa-plus text-white px-1"></i>
                             <span class="font-semibold">Add</span>
                         </button>
@@ -157,7 +169,7 @@
         </tbody>
     </table>
     <button
-        class="text-white bg-green-500 p-2 w-full uppercase text-lg font-semibold rounded"
+        class="py-4 text-white bg-green-500 hover:bg-green-600 w-full uppercase text-lg font-semibold rounded"
         onclick="location.href='{{ route('list.detailedAdd', ['list' => $list->id]) }}'"
         >Add Item</button>
 </div>

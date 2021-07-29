@@ -31,9 +31,14 @@
         @empty
         <li class="rounded px-2 py-2 border-2 my-2">
             There is no shopping list at the moment. 
-            <a href="list/create">Create One</a>
+            <a href="{{ route("list.create") }}">Create One</a>
         </li>
         @endforelse
     </ul>
+    <button
+        class="w-full rounded px-2 py-4 my-2 bg-green-500 text-white hover:bg-green-600 text-xl uppercase"
+        onclick="location.href='{{ route('list.create') }}'">
+        create new
+    </button>
 </div>
 @endsection
