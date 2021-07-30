@@ -5,7 +5,7 @@ window.addEventListener('DOMContentLoaded', (e)=>{
     var tagify = new Tagify(tagInput,{enforceWhitelist: true});
     var controller;
 
-    if(existingTags){
+    if(typeof existingTags !== 'undefined'){    //if(isset($existingTags))
         tagify.whitelist = existingTags
             tagify.addTags(existingTags)
     }
@@ -25,7 +25,8 @@ window.addEventListener('DOMContentLoaded', (e)=>{
         //show loading animation and hide the suggestions dropdown
         tagify.loading(true).dropdown.hide()
 
-        fetch(window.location.host+'/api/userlist/uid='+uid+'&input='+value, {signal:controller.signal})
+        //This surprisingly works?
+        fetch('/api/userlist/uid='+uid+'&input='+value, {signal:controller.signal})
             .then(RES => RES.json())
             .then(function(newWhitelist){
                 tagify.whitelist = newWhitelist //update the whitelist

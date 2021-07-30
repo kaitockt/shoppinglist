@@ -30,7 +30,7 @@ class Shoppinglist extends Model
 
     public function users(){
         return $this->belongsToMany(User::class, 'shoppinglist_user')
-            ->withPivot(['status', 'last_opened', 'inviter_id'])
+            ->withPivot('status', 'last_opened', 'inviter_id')
             ->orderBy('last_opened', 'desc');
     }
 

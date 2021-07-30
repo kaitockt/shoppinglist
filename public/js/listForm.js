@@ -12,7 +12,8 @@ window.addEventListener('DOMContentLoaded', function (e) {
   });
   var controller;
 
-  if (existingTags) {
+  if (typeof existingTags !== 'undefined') {
+    //if(isset($existingTags))
     tagify.whitelist = existingTags;
     tagify.addTags(existingTags);
   } // listen to keystrokes
@@ -35,8 +36,9 @@ window.addEventListener('DOMContentLoaded', function (e) {
     controller && controller.abort();
     controller = new AbortController(); //show loading animation and hide the suggestions dropdown
 
-    tagify.loading(true).dropdown.hide();
-    fetch(window.location.host + '/api/userlist/uid=' + uid + '&input=' + value, {
+    tagify.loading(true).dropdown.hide(); //This surprisingly works?
+
+    fetch('/api/userlist/uid=' + uid + '&input=' + value, {
       signal: controller.signal
     }).then(function (RES) {
       return RES.json();

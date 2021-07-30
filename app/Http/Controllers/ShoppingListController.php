@@ -80,7 +80,7 @@ class ShoppingListController extends Controller
 
         $users = [$uid => [
             "status" => 1,
-            'inviter' => $uid
+            'inviter_id' => $uid
             ]];
     
         $invites = json_decode($request->input('invite'), true);
@@ -98,7 +98,7 @@ class ShoppingListController extends Controller
             foreach($invites as $user){
                 $users[$user['id']] = [
                     'status' => 0,
-                    'inviter' => $uid
+                    'inviter_id' => $uid
                 ];
             }
         }
