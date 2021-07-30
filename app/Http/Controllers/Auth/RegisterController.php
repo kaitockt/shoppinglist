@@ -87,10 +87,10 @@ class RegisterController extends Controller
                 'last_opened' => Carbon::now()->toDateTimeString()
             ]);
 
-            $list->user()->attach([
+            $list->users()->attach([
                 $uid => [
                 "status" => 1,
-                'inviter' => $uid
+                'inviter_id' => $uid
                 ]]);
             return $user;
         } else {
