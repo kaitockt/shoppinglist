@@ -6,8 +6,16 @@
     class="md:absolute md:mt-8 bg-white rounded-md md:shadow-lg overflow-hidden z-20 w-full"
     :class="{'block':listsDropdownOpen, 'hidden':!listsDropdownOpen}"
     @click.away="listsDropdownOpen = false" style="margin-left:0">
-    <div class="bg-white block items-center px-4 py-3 border-b">
+    <div class="flex justify-between bg-white block items-center px-4 py-3 border-b">
         <h1 class="text-lg bg-white">Shopping Lists</h1>
+        <div class="has-tooltip">
+            <a href="{{ route('list.create') }}">
+                <i class="fas fa-plus text-gray-700 hover:text-gray-900"></i>
+            </a>
+            <span class="tooltip tooltip-left p-2 rounded bg-gray-800 text-white text-sm">
+                Create Shopping List
+            </span>
+        </div>
     </div>
 
 @forelse ($lists as $list)

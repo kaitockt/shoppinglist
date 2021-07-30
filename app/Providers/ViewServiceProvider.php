@@ -79,13 +79,6 @@ class ViewServiceProvider extends ServiceProvider
             );
         });
 
-        // $shoppingLists = DB::select(
-        //     'SELECT l.*, sum(if(i.valid_from <= NOW(), 1, 0)) AS validItemsCount
-        //     FROM shoppinglist AS l INNER JOIN shoppinglist_user AS su ON l.id = su.shoppinglist_id
-        //     LEFT JOIN listitems AS i ON l.id = i.list_id
-        //     WHERE su.user_id = 1 AND su.status = 1
-        //     GROUP BY su.id ORDER BY su.last_opened DESC;');
-
         view()->composer('layouts.app', function() {
             // Basically do this on every refresh?
             if(Auth::check()){

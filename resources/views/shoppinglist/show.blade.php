@@ -69,8 +69,16 @@
                 <td class="px-6 py-4">
                     {{ $item->name }}
                     @if ($item->repeat)
-                        <i class="fas fa-retweet text-gray-600"></i>
-                        {{-- TODO: Tooltip to show frequency of repeating --}}
+                        <div class="has-tooltip">
+                            <i class="fas fa-retweet text-gray-600"></i>
+                            <span class="tooltip tooltip-bottom p-2 rounded bg-gray-800 text-white">
+                                After buying, repeat {{
+                                    explode(" ", $item->repeat)[0] > 1)?
+                                    $item->repeat."s"   //plural
+                                    :$item->repeat      //singular
+                                }} later
+                            </span>
+                        </div>
                     @endif
                 </td>
                 <td class="px-6 py-4">
