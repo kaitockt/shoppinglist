@@ -43,8 +43,10 @@
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="name">Name</label>
                     <input id="name" type="text" name="name"
                         class="block w-80 py-2 px-4 my-2"
-                        {{ isset($item)?"value=$item->name":"" }}
-                        > 
+                        @if (isset($item))
+                            value="{{ $item->name }}"
+                        @endif
+                        >
                 </div>
                 
                 
