@@ -6,7 +6,7 @@
 <script>
     const fav = [
         @foreach ( Auth::user()->favourites()->get() as $fav)
-            "{{ $fav->name }}"
+            "{{ $fav->name }}",
         @endforeach
     ];
     window.addEventListener('load', function(e){
