@@ -1,5 +1,5 @@
 
-# ShoppingList
+# ShoppingList (Work In Progress)
 A Laravel Web App to help maintaining shopping lists across users
 
 ## Features
