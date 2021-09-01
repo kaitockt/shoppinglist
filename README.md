@@ -8,3 +8,6 @@ A Laravel Web App to help maintaining shopping lists across users
 * Set deadlines for buying items
 * Option to automatically repeat the same item after a predesignated period of time
 * Add items to favourite to add it again easily
+
+## Demo
+http://35.178.38.103/
