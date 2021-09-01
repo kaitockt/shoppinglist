@@ -170,7 +170,52 @@ class ShoppingListController extends Controller
     public function update(Request $request, $id)
     {
         //
-        dd($request);
+        // dd($request);
+        $uid = Auth::id();
+        $list = ShoppingList::findOrFail($id);
+
+        $list->name = $request->input('name');
+
+        $invites = json_decode($request->input('invite'), true);
+
+        
+        if($invites){
+            //list users to be shared with
+            $inviteList = array_column($invites, 'id');
+
+            //detach existing users not on list
+            $existingUsers = $list->users()->get();
+
+            foreach($existingUsers as $existingUser){
+                if(($existingUser->id != $list->creator->id) 
+                && (!in_array($existingUser->id, $inviteList))){
+                    $list->users()->detach($existingUser->id);
+                }
+            }
+
+            //attach non-existing users to list
+            $existingUsersIDs = $existingUsers->pluck('id')->toArray();
+
+            foreach($invites as $invite){
+                if(!in_array($invite['id'], array_column($existingUsersIDs, 'id'))){
+                    $users[$invite['id']] = [
+                        'status' => 0,
+                        'inviter_id' => $uid
+                    ];
+                }
+            }
+            $list->users()->attach($users);
+
+        } else {
+            //no other user listed. Remove all other users.
+            foreach($existingUsers as $existingUser){
+                if($existingUser->id != $list->creator->id){
+                    $list->users()->detach($existingUser->id);
+                }
+            }
+        }
+
+        return view('shoppinglist.show', ['list' => $list]);
     }
 
     /**

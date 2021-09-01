@@ -15,7 +15,7 @@ class AddColumnToShoppinglist extends Migration
     {
         Schema::table('shoppinglist', function (Blueprint $table) {
             //
-            $table->timestamp('last_opened');
+            $table->timestamp('last_opened')->useCurrent();
         });
     }
 
