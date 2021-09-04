@@ -1,4 +1,4 @@
-@extends('listitems\itemform')
+@extends('listitems.itemform')
 
 @section('list_id'){{ $item->list->id }}@endsection
 
