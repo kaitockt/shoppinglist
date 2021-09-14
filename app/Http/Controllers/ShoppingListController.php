@@ -41,7 +41,7 @@ class ShoppingListController extends Controller
         ->get();
 
         $shoppingLists = DB::select(
-            "SELECT l.*, sum(if(i.valid_from <= NOW(), 1, 0)) AS validItemsCount
+            "SELECT l.*, sum(if(i.valid_from <= NOW() AND i.done = 0, 1, 0)) AS validItemsCount
             FROM shoppinglist AS l INNER JOIN shoppinglist_user AS su ON l.id = su.shoppinglist_id
             LEFT JOIN listitems AS i ON l.id = i.list_id
             WHERE su.user_id = $uid AND su.status = 1
@@ -279,7 +279,7 @@ class ShoppingListController extends Controller
         return ListItems::create([
             'list_id' => $id,
             'name' => $request->input('name'),
-            'priority' => ShoppingList::findOrFail($id)->items()->max('priority') + 1
+            'priority' => ShoppingList::findOrFail($id)->items()->where([['done', 0], ['valid_from', '<=', date("Y-m-d")]])->max('priority') + 1
         ])?
         redirect("/list/$id"):
         redirect("/list/$id");  //TODO: Error handling?

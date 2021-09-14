@@ -21,7 +21,7 @@ class Shoppinglist extends Model
 
     public function list(){
         return $this->select(
-            'SELECT l.*, sum(if(i.valid_from <= NOW(), 1, 0)) AS validItemsCount
+            'SELECT l.*, sum(if(i.valid_from <= NOW() AND i.done = 0, 1, 0)) AS validItemsCount
             FROM shoppinglist AS l INNER JOIN shoppinglist_user AS su ON l.id = su.shoppinglist_id
             LEFT JOIN listitems AS i ON l.id = i.list_id
             WHERE su.user_id = '.Auth::id().' AND su.status = 1
