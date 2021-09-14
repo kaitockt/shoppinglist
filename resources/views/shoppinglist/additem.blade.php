@@ -11,7 +11,7 @@ Add Item to {{ $list->name }}
 @endsection
 
 {{-- Default Value is set to last of the list --}}
-@section('priorityVal'){{ floatval($list->items()->where([['done', 0], ['valid_from', '<=', date("Y-m-d")]])->max('priority') + 1) }}@endsection
+@section('priorityVal'){{ floatval($list->items()->where([['done', 0], ['valid_from', '<=', now()]])->max('priority') + 1) }}@endsection
 
 @section('repeatNumber')
     {{"value=\"1\" disabled" }}

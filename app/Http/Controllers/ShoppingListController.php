@@ -279,7 +279,7 @@ class ShoppingListController extends Controller
         return ListItems::create([
             'list_id' => $id,
             'name' => $request->input('name'),
-            'priority' => ShoppingList::findOrFail($id)->items()->where([['done', 0], ['valid_from', '<=', date("Y-m-d")]])->max('priority') + 1
+            'priority' => ShoppingList::findOrFail($id)->items()->where([['done', 0], ['valid_from', '<=', now()]])->max('priority') + 1
         ])?
         redirect("/list/$id"):
         redirect("/list/$id");  //TODO: Error handling?
